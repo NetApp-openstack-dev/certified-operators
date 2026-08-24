@@ -9,6 +9,11 @@ jobs:
     if: ${{ github.event.issue.pull_request && startsWith(github.event.comment.body, '/re-trigger') }}
     runs-on: ubuntu-latest
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c # v2.21.0
+        with:
+          egress-policy: audit
+
       - name: Add temporary re-trigger label
         uses: actions-ecosystem/action-add-labels@bd52874380e3909a1ac983768df6976535ece7f8  # v1.1.0
         with:
