@@ -1,0 +1,669 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  capabilities: Deep Insights
+  name: trident-operator.v26.10.2
+  annotations:
+    alm-examples: |
+      [
+        {
+          "apiVersion": "trident.netapp.io/v1",
+          "kind": "TridentOrchestrator",
+          "metadata": {
+            "name": "trident"
+          },
+          "spec": {
+            "IPv6": false,
+            "debug": true,
+            "nodePrep": [],
+            "imagePullSecrets": [],
+            "imageRegistry": "",
+            "namespace": "trident",
+            "silenceAutosupport": false
+          }
+        }
+      ]
+    categories: Storage
+    containerImage:
+      registry.connect.redhat.com/netapp/trident-operator-image@sha256:88343e9c416fc4a1b107c39e3b906510a1771fea2b4a136e35aa76ed19137e2b
+    description: Trident Operator, to manage NetApp Trident installations
+    repository: https://github.com/netapp/trident
+    support: NetApp
+    operatorhub.io/ui-metadata-max-k8s-version: '1.37'
+    operators.openshift.io/valid-subscription: No subscriptions are required
+    features.operators.openshift.io/disconnected: 'true'
+    features.operators.openshift.io/fips-compliant: 'false'
+    features.operators.openshift.io/proxy-aware: 'false'
+    features.operators.openshift.io/tls-profiles: 'false'
+    features.operators.openshift.io/token-auth-aws: 'false'
+    features.operators.openshift.io/token-auth-azure: 'false'
+    features.operators.openshift.io/token-auth-gcp: 'false'
+    features.operators.openshift.io/csi: 'true'
+    createdAt: 2026-11-25
+spec:
+  customresourcedefinitions:
+    owned:
+    - description: Used to deploy NetApp Trident.
+      displayName: Trident Orchestrator
+      kind: TridentOrchestrator
+      name: tridentorchestrators.trident.netapp.io
+      version: v1
+  description: |
+    NetApp Trident is an open source storage provisioner and orchestrator maintained by NetApp. It enables you to create storage volumes for containerized applications managed by Docker and Kubernetes. For full release information, including patch release changes, see https://docs.netapp.com/us-en/trident/trident-rn.html.
+
+    Due to an issue being investigated by Red Hat and NetApp, oc-mirror cannot sync Windows container images that are part of the Trident-certified operator manifest hosted on registry.connect.redhat.com. This new manifest only points to Linux-only container images. Windows users should use the Trident community operator until this issue is addressed.
+  displayName: NetApp Trident
+  icon:
+  - base64data: |
+      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
+    mediatype: image/png
+  install:
+    spec:
+      deployments:
+      - name: trident-operator
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              app: operator.trident.netapp.io
+              name: trident-operator
+          strategy:
+            type: Recreate
+          template:
+            metadata:
+              labels:
+                app: operator.trident.netapp.io
+                name: trident-operator
+            spec:
+              containers:
+              - command:
+                - /trident-operator
+                - --debug
+                env:
+                - name: POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: OPERATOR_NAME
+                  value: trident-operator
+                - name: DEFAULT_TRIDENT_IMAGE
+                  value:
+                    registry.connect.redhat.com/netapp/trident@sha256:4787bf8bf2ba4ca3107652e5a8351b4d958fa5973fa7c46e8c04a1292a9167d8
+                - name: DEFAULT_TRIDENT_AUTOSUPPORT_IMAGE
+                  value:
+                    registry.connect.redhat.com/netapp/trident-autosupport@sha256:c5135a0acb3d251ee5381eeb97599bffec1d725447c66a01318116d51d439b45
+                - name: TRIDENT_CSI_SIDECAR_PROVISIONER_IMAGE
+                  value:
+                    registry.redhat.io/openshift4/ose-csi-external-provisioner-rhel9@sha256:ae296ab0164ad7a5ec6c5298a2e22c04d23648245aeaeaa477e3fab42867a3c7
+                - name: TRIDENT_CSI_SIDECAR_ATTACHER_IMAGE
+                  value:
+                    registry.redhat.io/openshift4/ose-csi-external-attacher-rhel9@sha256:125b7cede1f8a64ef56aeaf2cc8fdef253db61be0287ec55c78d45d9faffb27a
+                - name: TRIDENT_CSI_SIDECAR_RESIZER_IMAGE
+                  value:
+                    registry.redhat.io/openshift4/ose-csi-external-resizer-rhel9@sha256:0f0f25511ab06b16a6067c8d7ed47dc189119c7d5052f891a9691e27848424fe
+                - name: TRIDENT_CSI_SIDECAR_SNAPSHOTTER_IMAGE
+                  value:
+                    registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel9@sha256:d3292ff49e06ab36a8cb76595109fdb0b271063e96c82748cb81b95c7f783871
+                - name: TRIDENT_CSI_SIDECAR_NODE_DRIVER_REGISTRAR_IMAGE
+                  value:
+                    registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel9@sha256:649f8fa6e6d1c83c62dda8239a1dd65092dd7a688c14dda395d9221bddd5dada
+                - name: TRIDENT_CSI_SIDECAR_LIVENESS_PROBE_IMAGE
+                  value:
+                    registry.redhat.io/openshift4/ose-csi-livenessprobe-rhel9@sha256:7d6eda83cbb652c8088595165091f30e9b1f4611f8e5f016c840ecbc78b6887c
+                image:
+                  registry.connect.redhat.com/netapp/trident-operator-image@sha256:88343e9c416fc4a1b107c39e3b906510a1771fea2b4a136e35aa76ed19137e2b
+                imagePullPolicy: IfNotPresent
+                name: trident-operator
+              nodeSelector:
+                kubernetes.io/arch: amd64
+                kubernetes.io/os: linux
+              serviceAccountName: trident-operator
+      permissions:
+      - rules:
+  # Permissions same as Trident
+        - apiGroups:
+          - ''
+          resources:
+          - namespaces
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - ''
+          resources:
+          - persistentvolumes
+          - persistentvolumeclaims
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - update
+          - patch
+        - apiGroups:
+          - ''
+          resources:
+          - persistentvolumeclaims/status
+          verbs:
+          - update
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - update
+          - patch
+        - apiGroups:
+          - ''
+          resources:
+          - events
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+        - apiGroups:
+          - ''
+          resources:
+          - secrets
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - update
+          - patch
+        - apiGroups:
+          - ''
+          resources:
+          - resourcequotas
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - update
+          - patch
+        - apiGroups:
+          - ''
+          resources:
+          - pods
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - update
+          - patch
+        - apiGroups:
+          - ''
+          resources:
+          - pods/log
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ''
+          resources:
+          - nodes
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments/status
+          verbs:
+          - update
+          - patch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshots
+          - volumesnapshotclasses
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+          - patch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotclasses
+          verbs:
+          - create
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshots/status
+          - volumesnapshotcontents/status
+          verbs:
+          - update
+          - patch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - update
+          - patch
+        - apiGroups:
+          - groupsnapshot.storage.k8s.io
+          resources:
+          - volumegroupsnapshots
+          verbs:
+          - list
+        - apiGroups:
+          - groupsnapshot.storage.k8s.io
+          resources:
+          - volumegroupsnapshotclasses
+          verbs:
+          - list
+          - watch
+        - apiGroups:
+          - groupsnapshot.storage.k8s.io
+          resources:
+          - volumegroupsnapshotcontents
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+        - apiGroups:
+          - groupsnapshot.storage.k8s.io
+          resources:
+          - volumegroupsnapshotcontents/status
+          verbs:
+          - update
+        - apiGroups:
+          - csi.storage.k8s.io
+          resources:
+          - csidrivers
+          - csinodeinfos
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - update
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - csidrivers
+          - csinodes
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - update
+          - patch
+        - apiGroups:
+          - apiextensions.k8s.io
+          resources:
+          - customresourcedefinitions
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - update
+          - patch
+        - apiGroups:
+          - trident.netapp.io
+          resources:
+          - tridentversions
+          - tridentbackends
+          - tridentstorageclasses
+          - tridentvolumes
+          - tridentvolumepublications
+          - tridentvolumereferences
+          - tridentnodes
+      # Needed for controller UpdateStatus calls on TridentNode acknowledgements.
+          - tridentnodes/status
+          - tridenttransactions
+          - tridentsnapshots
+          - tridentbackendconfigs
+          - tridentbackendconfigs/status
+          - tridentmirrorrelationships
+          - tridentmirrorrelationships/status
+          - tridentactionmirrorupdates
+          - tridentactionmirrorupdates/status
+          - tridentsnapshotinfos
+          - tridentsnapshotinfos/status
+          - tridentgroupsnapshots
+          - tridentgroupsnapshots/status
+          - tridentactionsnapshotrestores
+          - tridentactionsnapshotrestores/status
+          - tridentnoderemediations
+          - tridentnoderemediations/status
+          - tridentnoderemediationtemplates
+          - tridentnoderemediationtemplates/status
+          - tridentvolumemoves
+          - tridentvolumemoves/status
+          - tridentprovisioners # Required for Tprov
+          - tridentprovisioners/status # Required to update Tprov's status section
+          - tridentorchestrators # Required for Torc
+          - tridentorchestrators/status # Required to update Torc's status section
+          - tridentconfigurators # Required for tconf
+          - tridentconfigurators/status # Required to update tconf's status section
+          - tridentautogrowpolicies
+          - tridentautogrowpolicies/status
+          - tridentautogrowrequestinternals
+          - tridentautogrowrequestinternals/status
+          - tridentobjectstores
+          - tridentobjectstores/status
+          - tridentbuckets
+          - tridentbucketaccesses
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - update
+          - patch
+  # The operator never touches COSI objects itself, but Kubernetes forbids granting permissions
+  # you do not hold, so it must carry these to write them into the trident-controller role.
+        - apiGroups:
+          - objectstorage.k8s.io
+          resources:
+          - buckets
+          - buckets/status
+          - buckets/finalizers
+          - bucketclaims
+          - bucketclaims/status
+          - bucketclaims/finalizers
+          - bucketaccesses
+          - bucketaccesses/status
+          - bucketaccesses/finalizers
+          - bucketclasses
+          - bucketaccessclasses
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - update
+          - patch
+        - apiGroups:
+          - policy
+          resources:
+          - podsecuritypolicies
+          verbs:
+          - use
+          resourceNames:
+          - tridentpods
+  # Required so the operator can grant coordination.k8s.io/leases to trident-node-linux
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - list
+          - create
+          - update
+          - patch
+          - delete
+  # Now Operator specific permissions
+        - apiGroups:
+          - ''
+          resources:
+          - namespaces
+          verbs:
+          - create
+          - patch
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          - daemonsets
+          - statefulsets
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          - statefulsets
+          verbs:
+          - delete
+          - update
+          - patch
+          resourceNames:
+          - trident
+          - trident-csi
+          - trident-controller
+        - apiGroups:
+          - apps
+          resources:
+          - daemonsets
+          verbs:
+          - delete
+          - update
+          - patch
+          resourceNames:
+          - trident
+          - trident-csi
+          - trident-csi-windows
+          - trident-node-linux
+          - trident-node-windows
+        - apiGroups:
+          - ''
+          resources:
+          - pods/exec
+          - services
+          - serviceaccounts
+          verbs:
+          - get
+          - list
+          - create
+        - apiGroups:
+          - ''
+          resources:
+          - pods/exec
+          - services
+          verbs:
+          - delete
+          - update
+          - patch
+          resourceNames:
+          - trident-csi
+          - trident
+        - apiGroups:
+          - ''
+          resources:
+          - serviceaccounts
+          verbs:
+          - delete
+          - update
+          - patch
+          resourceNames:
+          - trident-controller
+          - trident-node-linux
+          - trident-node-windows
+          - trident-csi
+          - trident
+        - apiGroups:
+          - authorization.openshift.io
+          - rbac.authorization.k8s.io
+          resources:
+          - roles
+          - rolebindings
+          - clusterroles
+          - clusterrolebindings
+          verbs:
+          - list
+          - create
+        - apiGroups:
+          - authorization.openshift.io
+          - rbac.authorization.k8s.io
+          resources:
+          - roles
+          - rolebindings
+          - clusterroles
+          - clusterrolebindings
+          verbs:
+          - get
+          - delete
+          - update
+          - patch
+          resourceNames:
+          - trident-node-remediation-access
+          - trident-controller
+          - trident-node-linux
+          - trident-node-windows
+          - trident-csi
+          - trident
+        - apiGroups:
+          - policy
+          resources:
+          - podsecuritypolicies
+          verbs:
+          - list
+          - create
+        - apiGroups:
+          - policy
+          resources:
+          - podsecuritypolicies
+          resourceNames:
+          - tridentpods
+          verbs:
+          - delete
+          - update
+          - patch
+        - apiGroups:
+          - security.openshift.io
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - get
+          - list
+          - create
+        - apiGroups:
+          - security.openshift.io
+          resources:
+          - securitycontextconstraints
+          resourceNames:
+          - trident-controller
+          - trident-node-linux
+          - trident-node-windows
+          - trident
+          verbs:
+          - delete
+          - update
+          - patch
+        - apiGroups:
+          - policy
+          resources:
+          - podsecuritypolicies
+          verbs:
+          - use
+          resourceNames:
+          - trident-controller
+          - trident-node-linux
+          - trident-node-windows
+          - tridentoperatorpods
+        serviceAccountName: trident-operator
+    strategy: deployment
+  installModes:
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - NetApp
+  - ONTAP
+  - Trident
+  - storage
+  - performance
+  - open source
+  - Astra
+  - Cloud Native
+  - AWS
+  - Azure
+  - GCP
+  - Cloud Volumes
+  links:
+  - name: GitHub Repository
+    url: https://github.com/NetApp/trident
+  - name: Trident documentation
+    url: https://docs.netapp.com/us-en/trident/index.html
+  - name: Support policy
+    url: https://mysupport.netapp.com/site/info/version-support
+  - name: Release Notes
+    url: https://docs.netapp.com/us-en/trident/trident-rn.html
+  maintainers:
+  - email: ng-trident-openshift-operator@netapp.com
+    name: NetApp
+  provider:
+    name: NetApp, Inc.
+    url: https://www.netapp.com/
+  version: 26.10.2
+  relatedImages:
+  - name: trident-operator
+    image:
+      registry.connect.redhat.com/netapp/trident-operator-image@sha256:88343e9c416fc4a1b107c39e3b906510a1771fea2b4a136e35aa76ed19137e2b
+  - name: trident
+    image:
+      registry.connect.redhat.com/netapp/trident@sha256:4787bf8bf2ba4ca3107652e5a8351b4d958fa5973fa7c46e8c04a1292a9167d8
+  - name: trident-autosupport
+    image:
+      registry.connect.redhat.com/netapp/trident-autosupport@sha256:c5135a0acb3d251ee5381eeb97599bffec1d725447c66a01318116d51d439b45
+  - name: csi-sidecar-provisioner
+    image:
+      registry.redhat.io/openshift4/ose-csi-external-provisioner-rhel9@sha256:ae296ab0164ad7a5ec6c5298a2e22c04d23648245aeaeaa477e3fab42867a3c7
+  - name: csi-sidecar-attacher
+    image:
+      registry.redhat.io/openshift4/ose-csi-external-attacher-rhel9@sha256:125b7cede1f8a64ef56aeaf2cc8fdef253db61be0287ec55c78d45d9faffb27a
+  - name: csi-sidecar-resizer
+    image:
+      registry.redhat.io/openshift4/ose-csi-external-resizer-rhel9@sha256:0f0f25511ab06b16a6067c8d7ed47dc189119c7d5052f891a9691e27848424fe
+  - name: csi-sidecar-snapshotter
+    image:
+      registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel9@sha256:d3292ff49e06ab36a8cb76595109fdb0b271063e96c82748cb81b95c7f783871
+  - name: csi-sidecar-node-driver-registrar
+    image:
+      registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel9@sha256:649f8fa6e6d1c83c62dda8239a1dd65092dd7a688c14dda395d9221bddd5dada
+  - name: csi-sidecar-liveness-probe
+    image:
+      registry.redhat.io/openshift4/ose-csi-livenessprobe-rhel9@sha256:7d6eda83cbb652c8088595165091f30e9b1f4611f8e5f016c840ecbc78b6887c
